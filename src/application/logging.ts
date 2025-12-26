@@ -42,7 +42,7 @@ const appTransport = new DailyRotateFile({
 });
 
 const consoleTransport = new transports.Console({
-    level: env.NODE_ENV === "production" ? "silent" : "debug",
+    level: env.NODE_ENV === "production" ? "http" : "debug",
     format: format.combine(
         format.timestamp({ format: "YYYY-MM-DD HH:mm:ss.SSS" }),
         format.printf(({ level, message, timestamp, ...meta }) => {
@@ -53,6 +53,8 @@ const consoleTransport = new transports.Console({
                     ? chalk.yellow
                     : level === "info"
                     ? chalk.blue
+                    : level === "http"
+                    ? chalk.green
                     : chalk.gray;
             const time = chalk.white(`[${timestamp}]`);
             const lvl = color(level.toUpperCase());
@@ -67,7 +69,7 @@ const logger = createLogger({
     levels,
     level: (env.LOG_LEVEL as keyof typeof levels) || (env.NODE_ENV === "production" ? "info" : "debug"),
     format: format.combine(timestamp, json),
-    transports: [errorTransport, appTransport, ...(env.NODE_ENV === "production" ? [] : [consoleTransport])],
+    transports: [errorTransport, appTransport, consoleTransport],
 });
 
 /**

@@ -1,10 +1,50 @@
 services:
+    # Express Application
+    app:
+        build:
+            context: .
+            dockerfile: .docker/Dockerfile
+        container_name: express-starter-app
+        ports:
+            - "8000:8000"
+        environment:
+            - NODE_ENV=production
+            - PORT=8000
+            - DATABASE_URL=postgresql://express-starter:express-starter@db:5432/express-starter
+            - REDIS_URL=redis://redis:6379
+            - LOG_LEVEL=${LOG_LEVEL:-info}
+            - LOG_RETENTION=${LOG_RETENTION:-14d}
+        volumes:
+            - ./storage/logs:/app/storage/logs
+        depends_on:
+            db:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
+        restart: unless-stopped
+        networks:
+            - app-network
+        healthcheck:
+            test:
+                [
+                    "CMD",
+                    "node",
+                    "-e",
+                    "require('http').get('http://localhost:8000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})",
+                ]
+            interval: 30s
+            timeout: 3s
+            start_period: 5s
+            retries: 3
+
     # Mailpit
     mail:
         image: axllent/mailpit:latest
         ports:
             - 1025:1025
             - 8025:8025
+        networks:
+            - app-network
 
     # Redis
     redis:
@@ -14,6 +54,8 @@ services:
             - .docker/redis/data:/data
         ports:
             - 6379:6379
+        networks:
+            - app-network
         healthcheck:
             test: ["CMD", "redis-cli", "ping"]
             retries: 3
@@ -31,7 +73,13 @@ services:
             - POSTGRES_USER=express-starter
             - POSTGRES_PASSWORD=express-starter
             - POSTGRES_DB=express-starter
+        networks:
+            - app-network
         healthcheck:
             test: ["CMD", "pg_isready", "-q", "-d", "express-starter", "-U", "express-starter"]
             retries: 3
             timeout: 5s
+
+networks:
+    app-network:
+        driver: bridge
