@@ -1,0 +1,61 @@
+generator client {
+    provider = "prisma-client"
+    output   = "../src/generated/prisma"
+    runtime  = "nodejs"
+}
+
+datasource db {
+    provider = "postgresql"
+}
+
+model user {
+    id         String   @id @default(cuid())
+    name       String
+    email      String   @unique
+    password   String
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    @@map("tb_user")
+}
+
+model category {
+    id         String   @id @default(cuid())
+    name       String   @unique
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+    boards     board[]
+
+    @@map("tb_category")
+}
+
+model board {
+    id          String    @id @default(cuid())
+    id_category String?
+    name        String
+    photo_url   String?
+    created_at  DateTime  @default(now())
+    updated_at  DateTime  @updatedAt
+    requests    request[]
+    category    category? @relation(fields: [id_category], references: [id], onDelete: SetNull)
+
+    @@index([id_category])
+    @@map("tb_board")
+}
+
+model request {
+    id                  String    @id @default(cuid())
+    board_id            String?
+    board               board?    @relation(fields: [board_id], references: [id], onDelete: SetNull)
+    customer_name       String
+    customer_phone      String
+    message_text        String
+    delivery_address    String
+    delivery_date       DateTime?
+    reference_photo_url String?
+    created_at          DateTime  @default(now())
+    updated_at          DateTime  @updatedAt
+
+    @@index([board_id])
+    @@map("tb_request")
+}
