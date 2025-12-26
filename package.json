@@ -1,14 +1,18 @@
 {
     "name": "express-starter",
     "version": "1.0.0",
-    "license": "ISC",
-    "author": "Muhammad Haykal",
+    "license": "MIT",
+    "author": {
+        "name": "Muhammad Haykal",
+        "email": "muhammadhaykall99@gmail.com",
+        "url": "https://github.com/haykal-fe-verd"
+    },
     "description": "An Express + TypeScript starter template featuring OpenAPI docs with Scalar, Prisma ORM for database access, and Redis for caching/queues/sessions—built for clean architecture and fast API development.",
     "homepage": "https://github.com/haykal-fe-verd/express-starter",
     "repository": {
         "type": "github",
         "directory": "express-starter",
-        "url": "https://github.com/haykal-fe-verd"
+        "url": "https://github.com/haykal-fe-verd/express-starter"
     },
     "keywords": [
         "express",
