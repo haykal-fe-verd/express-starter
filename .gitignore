@@ -1,0 +1,92 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build Output
+dist/
+build/
+out/
+.next/
+
+# Prisma Generated
+/src/generated/
+/src/generated/prisma/
+
+# Logs
+logs/
+*.log
+storage/logs/*.log
+storage/logs/*
+
+# Testing
+coverage/
+.nyc_output/
+*.lcov
+
+# IDE & Editors
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+
+# TypeScript
+*.tsbuildinfo
+.tsbuildinfo
+
+# Docker
+.docker/db/data/
+.docker/redis/data/
+.docker/postgres/
+docker-compose.override.yml
+
+# Temporary Files
+*.tmp
+*.temp
+.cache/
+.temp/
+
+# OS
+Thumbs.db
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Backup files
+*.bak
+*.backup
+
+# Lock files (optional - uncomment if you want to ignore)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+bun.lockb
